@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  padding: 1rem;
+  background: #656D3F;
+  color: white;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+main {
+  flex: 1;
+}
