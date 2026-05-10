@@ -1,0 +1,29 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [105.26, -5.38]
+      },
+      "properties": {
+        "class_id": 0,
+        "class_name": "Bangunan (AI)",
+        "confidence": 0.92
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [105.28, -5.36]
+      },
+      "properties": {
+        "class_id": 0,
+        "class_name": "Fasilitas (AI)",
+        "confidence": 0.85
+      }
+    }
+  ]
+}

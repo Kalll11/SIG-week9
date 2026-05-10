@@ -16,6 +16,9 @@ function MapClickHandler({ onMapClick }) {
 function MapView() {
   const [geojsonData, setGeojsonData] = useState(null);
   
+  // --- TAMBAHKAN STATE AI DI SINI ---
+  const [aiDetections, setAiDetections] = useState(null);
+  
   // State untuk mengontrol Form Modal
   const [showForm, setShowForm] = useState(false);
   const [formMode, setFormMode] = useState(''); // 'add' atau 'edit'
@@ -31,7 +34,23 @@ function MapView() {
     }
   };
 
-  useEffect(() => { loadData(); }, []);
+  // --- TAMBAHKAN FUNGSI LOAD AI DI SINI ---
+  const loadAIData = async () => {
+    try {
+      // Pastikan file detections.geojson sudah Anda letakkan di folder public
+      const response = await fetch('/detections.geojson');
+      const data = await response.json();
+      setAiDetections(data);
+    } catch (error) {
+      console.error("Gagal memuat data AI", error);
+    }
+  };
+
+  // --- UPDATE USEEFFECT UNTUK MEMANGGIL KEDUA FUNGSI ---
+  useEffect(() => { 
+    loadData(); 
+    loadAIData(); 
+  }, []);
 
   // Trigger saat area kosong di peta diklik
   const handleMapClick = (latlng) => {
@@ -72,7 +91,6 @@ function MapView() {
     `;
     layer.bindPopup(popupContent);
 
-    // Mendaftarkan event listener pada tombol di dalam popup
     layer.on('popupopen', () => {
       const btnEdit = document.getElementById(`btn-edit-${id}`);
       const btnHapus = document.getElementById(`btn-hapus-${id}`);
@@ -82,7 +100,7 @@ function MapView() {
           setFormData({ id, nama, jenis, alamat: alamat || '', lat: feature.geometry.coordinates[1], lng: feature.geometry.coordinates[0] });
           setFormMode('edit');
           setShowForm(true);
-          layer.closePopup(); // Tutup popup saat form edit terbuka
+          layer.closePopup();
         };
       }
 
@@ -92,7 +110,7 @@ function MapView() {
             try {
               await api.delete(`/fasilitas/${id}`);
               alert('Fasilitas berhasil dihapus!');
-              loadData(); // Refresh peta otomatis
+              loadData();
             } catch (err) {
               alert('Gagal menghapus data.');
             }
@@ -102,7 +120,6 @@ function MapView() {
     });
   };
 
-  // Fungsi saat tombol Simpan di Form ditekan
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -122,7 +139,7 @@ function MapView() {
         });
       }
       setShowForm(false);
-      loadData(); // Refresh peta otomatis
+      loadData();
       alert('Data berhasil disimpan!');
     } catch (error) {
       alert('Gagal menyimpan data! Pastikan Anda sudah login.');
@@ -136,13 +153,40 @@ function MapView() {
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <MapClickHandler onMapClick={handleMapClick} />
         
+        {/* Layer Fasilitas Database (Data Lama) */}
         {geojsonData && (
           <GeoJSON 
-            key={JSON.stringify(geojsonData)} // Kunci untuk merender ulang layer saat data berubah
+            key={JSON.stringify(geojsonData)}
             data={geojsonData} 
             style={getStyle} 
             pointToLayer={pointToLayer} 
             onEachFeature={onEachFeature} 
+          />
+        )}
+
+        {/* --- TAMBAHKAN LAYER DETEKSI AI DI SINI --- */}
+        {aiDetections && (
+          <GeoJSON 
+            key="ai-layer"
+            data={aiDetections}
+            pointToLayer={(feature, latlng) => {
+              return L.circleMarker(latlng, { 
+                radius: 6, 
+                fillColor: "#8E44AD", // Ungu untuk membedakan dengan data manual
+                color: "white", 
+                weight: 1, 
+                fillOpacity: 0.9 
+              });
+            }}
+            onEachFeature={(feature, layer) => {
+              layer.bindPopup(`
+                <div style="font-family: sans-serif;">
+                  <strong style="color: #8E44AD;">Deteksi AI</strong><br/>
+                  <b>Objek:</b> ${feature.properties.class_name}<br/>
+                  <b>Confidence:</b> ${(feature.properties.confidence * 100).toFixed(1)}%
+                </div>
+              `);
+            }}
           />
         )}
       </MapContainer>

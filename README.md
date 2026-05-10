@@ -19,6 +19,28 @@ Aplikasi WebGIS Full-Stack interaktif untuk pemetaan fasilitas publik di wilayah
 
 ---
 
+---
+
+## 📸 Dokumentasi (Screenshot)
+
+### 1. Halaman Login dan Registrasi
+![Halaman Login WebGIS](assets/1_login.png)
+*Keterangan: Antarmuka login dengan validasi email dan password, serta fitur registrasi akun baru.*
+
+### 2. Tampilan Utama Peta (Read)
+![Tampilan Utama Peta](assets/2_peta_utama.png)
+*Keterangan: Tampilan keseluruhan peta fasilitas publik setelah pengguna berhasil masuk.*
+
+### 3. Tambah Fasilitas (Create)
+![Form Tambah Fasilitas](assets/3_tambah_fasilitas.png)
+*Keterangan: Interaksi penambahan data spasial baru langsung melalui klik pada peta.*
+
+### 4. Tambah, Edit, & Hapus Fasilitas (Update & Delete)
+![Form Edit dan Hapus](assets/4_edit_hapus.png)
+*Keterangan: Popup interaktif pada marker untuk melakukan penambahan, pembaruan, atau penghapusan data secara permanen.*
+
+---
+
 ## 🛠️ Teknologi yang Digunakan
 * **Database:** PostgreSQL + PostGIS Extension
 * **Backend:** Python, FastAPI, Pydantic, Passlib (Bcrypt), Python-Jose (JWT)
