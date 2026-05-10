@@ -61,3 +61,21 @@ Aplikasi WebGIS Full-Stack interaktif untuk pemetaan fasilitas publik di wilayah
    ```bash
    python -m venv venv
    venv\Scripts\activate  # (Untuk Windows)
+
+## 🤖 Fitur Terbaru (Praktikum 10 - Spatial AI)
+Sistem WebGIS ini telah diintegrasikan dengan *pipeline Computer Vision* untuk otomatisasi deteksi objek spasial.
+* **Integrasi YOLOv8:** Menggunakan model Deep Learning canggih (Ultralytics) untuk mendeteksi objek dari citra satelit/foto udara.
+* **Image Tiling & Georeferencing:** Mendukung pemrosesan citra beresolusi masif dengan teknik pemotongan (*tiling*), serta konversi otomatis dari koordinat piksel spasial ke koordinat geografis absolut (Lintang/Bujur) menggunakan library `rasterio`.
+* **Dynamic AI Layer:** *Output* deteksi otomatis diekspor sebagai GeoJSON dan divisualisasikan secara dinamis sebagai layer khusus (*AI Marker*) dengan skor kepercayaan (*confidence score*) di atas peta React-Leaflet.
+
+---
+
+## 📸 Dokumentasi (Screenshot Praktikum 10)
+
+### 1. Eksekusi Script Pipeline Spatial AI (Python)
+<img width="784" height="79" alt="Screenshot 2026-05-10 215441" src="https://github.com/user-attachments/assets/6b13eb92-b84d-4d69-86bd-6bc871527f32" />
+*Keterangan: Proses tiling citra satelit berformat GeoTIFF dan inferensi YOLOv8 untuk mengekspor objek menjadi format GeoJSON.*
+
+### 2. Render Hasil Deteksi AI pada Peta WebGIS
+<img width="959" height="449" alt="Screenshot 2026-05-10 202415" src="https://github.com/user-attachments/assets/cde46891-f394-49c1-b3c4-ebbd13b2c253" />
+*Keterangan: Markah berwarna ungu menunjukkan lokasi fasilitas yang berhasil diidentifikasi secara otomatis oleh sistem Kecerdasan Buatan (AI), lengkap dengan popup detail klasifikasi.*
